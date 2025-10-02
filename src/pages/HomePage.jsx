@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import HomeImg from "/homepage.jpg";
 import KodaImg from "/koda.png";
 import { User } from "lucide-react";
@@ -11,9 +10,10 @@ import { Helmet } from "react-helmet";
 const HomePage = () => {
   return (
     <>
-      <Helmet><title>HomePage</title></Helmet>
+      <Helmet>
+        <title>HomePage</title>
+      </Helmet>
       <main>
-        <Navbar />
         <img
           src={HomeImg}
           alt="image-home"
@@ -58,7 +58,7 @@ const HomePage = () => {
         </section>
 
         <Link
-          to="/article/1"
+          to="/agoypra/bootstrapping-codeigniter4-docker"
           className="flex flex-col md:flex-row gap-6 md:gap-12 py-7 px-4 md:px-12 hover:bg-gray-50 rounded-lg transition"
         >
           <img
@@ -76,7 +76,7 @@ const HomePage = () => {
             </p>
             <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
               <User className="cursor-pointer hover:text-gray-700" size={20} />
-              <p>User</p>
+              <p>Fazztrack</p>
               <p className="before:content-['•'] before:mx-2">
                 {moment("02/10/2025", "DD/MM/YYYY").format("MMM D, YYYY")}
               </p>
