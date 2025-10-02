@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import { Helmet } from "react-helmet";
 import Markdown from "react-markdown";
 import moment from "moment";
 
-const ArticleDetail = () => {
+/**
+ * @typedef {Object} ArticleData
+ * @property {number} id - ID unik artikel.
+ * @property {string} title - Judul artikel.
+ * @property {string} description - Deskripsi singkat artikel.
+ * @property {string} descriptionDetail - Isi detail artikel dalam format Markdown.
+ * @property {string} author - Nama penulis artikel.
+ * @property {string} slug - Slug artikel untuk URL.
+ * @property {string} image - URL gambar utama artikel.
+ * @property {string} readTime - Estimasi waktu baca (misalnya: "7 min read").
+ */
+
+export const ArticleDetail = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState([]);
 
@@ -16,6 +27,7 @@ const ArticleDetail = () => {
         const found = Array.isArray(data)
           ? data.find((a) => a.slug === slug)
           : [];
+          
         setArticle(found);
       })
       .catch((err) => console.error(err));
@@ -25,7 +37,6 @@ const ArticleDetail = () => {
 
   return (
     <>
-      <Navbar />
       <div className="p-8 max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
         <div className="flex flex-col gap-7 items-center my-7 md:flex-row">
@@ -33,7 +44,10 @@ const ArticleDetail = () => {
           <button className="py-2 px-4 rounded-4xl bg-white text-black border">
             Follow
           </button>
-          <p className="text-gray-400"> {moment("02/10/2025", "DD/MM/YYYY").format("MMM D, YYYY")}</p>
+          <p className="text-gray-400">
+            {" "}
+            {moment("02/10/2025", "DD/MM/YYYY").format("MMM D, YYYY")}
+          </p>
           <p>{article.readTime}</p>
         </div>
         <Helmet>
@@ -45,7 +59,53 @@ const ArticleDetail = () => {
           className="mb-4 w-full h-60 object-cover rounded-lg"
         />
         <p>
-          <Markdown >
+          <Markdown
+            components={{
+              h1: ({ ...props }) => (
+                <h1 className="text-4xl font-bold mt-8 mb-4" {...props} />
+              ),
+              h2: ({ ...props }) => (
+                <h2 className="text-3xl font-bold mt-6 mb-3" {...props} />
+              ),
+              h3: ({ ...props }) => (
+                <h3 className="text-2xl font-bold mt-4 mb-2" {...props} />
+              ),
+              p: ({ ...props }) => (
+                <p
+                  className="mb-4 text-gray-800 leading-relaxed text-lg"
+                  {...props}
+                />
+              ),
+              a: ({ ...props }) => (
+                <a className="text-blue-600 hover:underline" {...props} />
+              ),
+              ul: ({ ...props }) => (
+                <ul className="list-disc ml-6 mb-4" {...props} />
+              ),
+              ol: ({ ...props }) => (
+                <ol className="list-decimal ml-6 mb-4" {...props} />
+              ),
+              li: ({ ...props }) => <li className="mb-2" {...props} />,
+              blockquote: ({ ...props }) => (
+                <blockquote
+                  className="border-l-4 border-gray-300 pl-4 italic my-4"
+                  {...props}
+                />
+              ),
+              code: ({ inline, ...props }) =>
+                inline ? (
+                  <code
+                    className="bg-gray-100 px-2 py-1 rounded text-sm"
+                    {...props}
+                  />
+                ) : (
+                  <code
+                    className="block bg-gray-100 p-4 rounded my-4 overflow-x-auto"
+                    {...props}
+                  />
+                ),
+            }}
+          >
             {article.descriptionDetail}
           </Markdown>
         </p>
